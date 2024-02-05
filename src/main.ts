@@ -31,12 +31,10 @@ const renderEquation = () => {
         ctx.strokeStyle = "red";
 
         ctx.beginPath();
-        ctx.moveTo(0, -f(equation, -offsetX) + offsetY);
-
         for (let x = 0; x < canvas.width; x++) {
             let y = scale * -f(equation, (1 / scale) * (x - offsetX)) + offsetY;
-            if (y < 0) y = 1;
-            if (y > canvas.height) y = canvas.height - 1;
+            if (y < 0) y = 0;
+            if (y > canvas.height) y = canvas.height;
             console.log(x, y);
             ctx.lineTo(x, y);
         }
