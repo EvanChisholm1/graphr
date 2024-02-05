@@ -18,6 +18,7 @@ canvas.height = window.innerHeight;
 
 let offsetX = canvas.width / 2;
 let offsetY = canvas.height / 2;
+let scale = 10;
 
 const renderEquation = () => {
     if (equation === "") return;
@@ -30,7 +31,10 @@ const renderEquation = () => {
         for (let x = 0; x < canvas.width; x++) {
             // the max and min functions prevent the line from going off the screen
             const y = Math.min(
-                Math.max(-f(equation, x - offsetX) + offsetY, 0),
+                Math.max(
+                    scale * -f(equation, (1 / scale) * (x - offsetX)) + offsetY,
+                    0
+                ),
                 canvas.height
             );
             ctx.lineTo(x, y);
@@ -97,4 +101,9 @@ window.addEventListener("mousemove", (e) => {
         offsetX += e.movementX;
         offsetY += e.movementY;
     }
+});
+
+window.addEventListener("wheel", (e) => {
+    scale -= e.deltaY / 100;
+    if (scale < 0.000001) scale = 0.000001;
 });
