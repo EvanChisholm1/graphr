@@ -2,12 +2,17 @@ import { f, run } from "./parser";
 import "./style.css";
 
 const equationInput = document.querySelector(".equationIn") as HTMLInputElement;
-console.log(equationInput);
+const equationOutput = document.querySelector(
+    ".equationOutput"
+) as HTMLParagraphElement;
 
 let equation = "";
 
 equationInput.addEventListener("input", () => {
     equation = equationInput.value;
+    if (!equation.includes("x") && equation.trim() !== "")
+        equationOutput.textContent = run(equation).toString();
+    else equationOutput.textContent = "";
 });
 
 const canvas = document.querySelector(".canvas") as HTMLCanvasElement;
@@ -29,20 +34,14 @@ const renderEquation = () => {
         ctx.moveTo(0, -f(equation, -offsetX) + offsetY);
 
         for (let x = 0; x < canvas.width; x++) {
-            // the max and min functions prevent the line from going off the screen
-            const y = Math.min(
-                Math.max(
-                    scale * -f(equation, (1 / scale) * (x - offsetX)) + offsetY,
-                    0
-                ),
-                canvas.height
-            );
+            let y = scale * -f(equation, (1 / scale) * (x - offsetX)) + offsetY;
+            if (y < 0) y = 1;
+            if (y > canvas.height) y = canvas.height - 1;
+            console.log(x, y);
             ctx.lineTo(x, y);
         }
         ctx.stroke();
         ctx.closePath();
-    } else {
-        console.log(run(equation));
     }
 };
 

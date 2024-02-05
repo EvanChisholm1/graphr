@@ -23,8 +23,16 @@
     position: fixed;
     top: 0;
     left: 0;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    background-color: #eee;
 }
 
-.equationIn {
-    margin: 10px;
+.canvas:hover {
+    cursor: grab;
 }
+
+/* .equationIn { */
+/* margin: 10px; */
+/* } */
