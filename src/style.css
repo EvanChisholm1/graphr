@@ -33,6 +33,9 @@
     cursor: grab;
 }
 
-/* .equationIn { */
-/* margin: 10px; */
-/* } */
+.by-line {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin-right: 5px;
+}

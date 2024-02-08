@@ -42,10 +42,19 @@ const renderDot = (x: number, y: number) => {
     ctx.closePath();
 };
 
-const renderEquation = () => {
+const estimateIRC = (equation: string, x: number, h: number = 0.001) => {
+    const slope = (f(equation, x + h) - f(equation, x)) / h;
+    return slope;
+};
+
+const renderEquation = (
+    equation: string,
+    color: string,
+    drawTangent: boolean = false
+) => {
     if (equation === "") return;
     if (equation.includes("x")) {
-        ctx.strokeStyle = "red";
+        ctx.strokeStyle = color;
 
         ctx.beginPath();
         for (let x = 0; x < canvas.width; x++) {
@@ -60,9 +69,16 @@ const renderEquation = () => {
         ctx.stroke();
         ctx.closePath();
 
-        const y = screenToCartesianX(mouseX, offsetX, scale);
+        const x = screenToCartesianX(mouseX, offsetX, scale);
+        const y = f(equation, x);
         const screenY = cartesionToScreenY(y, offsetY, scale);
         renderDot(mouseX, screenY);
+
+        if (!drawTangent) return;
+
+        const IRC = estimateIRC(equation, x);
+        const tanEquation = `((${IRC}) * x) + (${y - IRC * x})`;
+        renderEquation(tanEquation, "blue");
     }
 };
 
@@ -93,7 +109,7 @@ const renderLoop = () => {
     renderHorizontalAxis();
 
     try {
-        renderEquation();
+        renderEquation(equation, "red", true);
     } catch (e) {
         console.error(e);
     }
