@@ -104,6 +104,9 @@ window.addEventListener("mousemove", (e) => {
 });
 
 window.addEventListener("wheel", (e) => {
-    scale -= e.deltaY / 100;
-    if (scale < 0.000001) scale = 0.000001;
+    // console.log(e.deltaY);
+    // scale -= e.deltaY / 100;
+    const direction = e.deltaY > 0 ? -1 : 1;
+    scale += 0.01 * direction;
+    // if (scale < 0.000001) scale = 0.000001;
 });
